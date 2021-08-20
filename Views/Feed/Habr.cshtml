@@ -1,8 +1,27 @@
-﻿@{
+﻿@model IEnumerable<Item>
+@{
     ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welc!um</h1>
+    <h1>RSS feed from Habr</h1>
+    @{ 
+        foreach(var item in Model)
+        {
+            <div>
+                <h2> 
+                    <a href=@item.Url>
+                        @item.Title
+                    </a>
+                </h2>
+                <label>
+                    Дата публикации @item.PubDate
+                </label>
+                <p>
+                 @Html.Raw(item.Description)
+                </p>
+            </div>
+        }
+    }
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
