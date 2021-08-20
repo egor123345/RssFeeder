@@ -23,7 +23,7 @@ namespace rss_feeder.Parsers
                 item.Description = xItem.Element("description").Value;
                 item.PubDate = DateTime.Parse(xItem.Element("pubDate").Value);
                 item.PubDate =  item.PubDate.AddHours(-3);
-                item.Url = xItem.Element("guid").Value;
+                item.Url = xItem.Element("link").Value;
                 items.Add(item);
             }
 
