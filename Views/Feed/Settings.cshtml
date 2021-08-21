@@ -1,20 +1,68 @@
-﻿@model FeedSettings
-
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model FeedSettings
 @{
     ViewData["Title"] = "RSS Feed Settings";
-    
+
 }
+<script>
+    $(document).ready(function () {
+        $("#rssChannels").on("click", ".del-but", function (e) {
+            const id = e.target.id;
+            $.ajax({
+                type: 'GET',
+                url: '/Feed/deleterss',
+                data: `rssChannel=${id}`,
+                success: function (result) {
+                    $('#rssChannels').html(result);
+                }
+            });
+        })
+        /* 
+         * другие кнопки! 
+        $("#rssChannels").on("click", ".del-but", function (e) {
+            const id = e.target.id;
+            $.ajax({
+                type: 'GET',
+                url: '/Feed/deleterss',
+                data: `rssChannel=${id}`,
+                success: function (result) {
+                    $('#rssChannels').html(result);
+                }
+            });
+        })
+        */
+    });
+</script>
+
+
 <h1>@ViewData["Title"]</h1>
 
-<form method="post" action="/Feed/Settings">
-    <div>
 
-        <label>Source sites</label>
-        <input name ="SrcSites" value=@Model.SrcSites>
+<div>
+    <label>
+        Rss channel
+    </label>
+    <input name="BaseRss" value=@Model.BaseRss>
+    <button>
+        Add
+    </button>
+</div>
+<div>
+    <label>Update frequency</label>
+    <input name="FreqUpd" type="number" value=@Model.FreqUpd>
+    <button id="upd">
+        Update
+    </button>
+</div>
+<div>
+    <h3>
+        Users Rss channels
+    </h3>
+    <div id="rssChannels">
+        @{Html.RenderPartial("deleterss.cshtml", @Model);}
     </div>
-    <div>
-        <label>Update frequency</label>
-        <input name ="FreqUpd" type="number" value=@Model.FreqUpd>
-    </div>
-    <input type="submit" value="Save">
-</form>
+
+</div>
+
+
+

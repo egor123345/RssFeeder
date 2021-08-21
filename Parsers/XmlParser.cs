@@ -18,10 +18,12 @@ namespace rss_feeder.Parsers
             XElement xChannel = xRss.Element("channel");
             foreach (XElement xItem  in xChannel.Elements("item").ToList())
             {
-                Item item = new Item();
-                item.Title = xItem.Element("title").Value;
-                item.Description = xItem.Element("description").Value;
-                item.PubDate = DateTime.Parse(xItem.Element("pubDate").Value);
+                Item item = new Item
+                {
+                    Title = xItem.Element("title").Value,
+                    Description = xItem.Element("description").Value,
+                    PubDate = DateTime.Parse(xItem.Element("pubDate").Value)
+                };
                 item.PubDate =  item.PubDate.AddHours(-3);
                 item.Url = xItem.Element("link").Value;
                 items.Add(item);

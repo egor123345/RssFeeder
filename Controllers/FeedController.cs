@@ -25,13 +25,23 @@ namespace rss_feeder.Controllers
             _logger = logger;
         }
 
+        public IActionResult deleterss(string rssChannel)
+        {
+            string jsonString = System.IO.File.ReadAllText(JsonPath);
+            FeedSettings settings = JsonSerializer.Deserialize<FeedSettings>(jsonString);
+            settings.RssChannels.Remove(rssChannel);
+            jsonString = JsonSerializer.Serialize<FeedSettings>(settings);
+            System.IO.File.WriteAllText(JsonPath, jsonString);
+            return PartialView(settings);
+        }
         public IActionResult Habr()
         {
 
             string jsonString = System.IO.File.ReadAllText(JsonPath);
             FeedSettings settings = JsonSerializer.Deserialize<FeedSettings>(jsonString);
             IParser parser = new XmlParser();
-            IEnumerable<Item> items = parser.Parse(settings.SrcSites);
+            IEnumerable<Item> items = parser.Parse(settings.BaseRss);
+            ViewBag.FreqUpd = settings.FreqUpd;
             return View(items);
         }
 
@@ -45,15 +55,16 @@ namespace rss_feeder.Controllers
         }
 
         [HttpPost]
-        public IActionResult Settings(string SrcSites, int FreqUpd)
+        public IActionResult Settings(string BaseRss, int FreqUpd)
         {
-            FeedSettings settings = new FeedSettings(SrcSites, FreqUpd);
+            FeedSettings settings = new FeedSettings(BaseRss, FreqUpd);
 
             string jsonString = JsonSerializer.Serialize<FeedSettings>(settings);
             System.IO.File.WriteAllText(JsonPath, jsonString);
             return Settings();
         }
 
+      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

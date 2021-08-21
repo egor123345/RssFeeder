@@ -8,13 +8,14 @@ namespace rss_feeder.Models
     public class FeedSettings
     {
         public FeedSettings() { }
-        public FeedSettings(string SrcSites, int FreqUpd)
+        public FeedSettings(string BaseRss, int FreqUpd)
         {
             this.FreqUpd = FreqUpd;
-            this.SrcSites = SrcSites;
+            this.BaseRss = BaseRss;
         }
-       public string SrcSites { get; set; }
+       public string BaseRss { get; set; }
        public int FreqUpd { get; set; }
+       public List<string> RssChannels { get; set; }
 
     }
 }

@@ -1,0 +1,19 @@
+﻿@model FeedSettings
+
+<ol>
+
+    @{
+        foreach (var rss in Model.RssChannels)
+        {
+            <li>
+                @rss
+                <button>
+                    Set Default RSS channel
+                </button>
+                <input type="button" value="Delete" id="@rss" class="del-but" />
+
+            </li>
+
+        }
+    }
+    <ol>
