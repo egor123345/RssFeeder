@@ -1,2 +1,1 @@
-### Hi there 👋
-This is RSS Feeder
+# This is RSS Feeder
