@@ -9,57 +9,71 @@
         $("#rssChannels").on("click", ".del-but", function (e) {
             const id = e.target.id;
             $.ajax({
-                type: 'GET',
-                url: '/Feed/deleterss',
+                type: 'DELETE',
+                url: '/Feed/rss',
                 data: `rssChannel=${id}`,
                 success: function (result) {
                     $('#rssChannels').html(result);
                 }
             });
         })
-        /* 
-         * другие кнопки! 
-        $("#rssChannels").on("click", ".del-but", function (e) {
-            const id = e.target.id;
+        $("#SettingsRss").on("click", "#createRss", function (e) {
+            const rss = $("#NewRss").val();
+            console.log(rss);
             $.ajax({
-                type: 'GET',
-                url: '/Feed/deleterss',
-                data: `rssChannel=${id}`,
+                type: 'POST',
+                url: '/Feed/rssCreate',
+                data: `rssChannel=${rss}`,
                 success: function (result) {
                     $('#rssChannels').html(result);
+                    $("#NewRss").val("");
                 }
             });
         })
-        */
+        $("#SettingsRss").on("click", "#upd", function (e) {
+            const freq = $("#FreqUpd").val();
+            console.log(freq);
+            $.ajax({
+                type: 'POST',
+                url: '/Feed/UpdFreq',
+                data: `freq=${freq}`,
+                success: function (result) {
+                    $("#upd").css("background-color", "green");
+                    setTimeout(($("#upd").css).bind($("#upd")), 1000, "background-color", "gray");
+                }
+            });
+        })
     });
 </script>
 
 
 <h1>@ViewData["Title"]</h1>
 
+<div id="SettingsRss">
+    <div>
+        <label>
+            Rss channel
+        </label>
+        <input  name="BaseRss" id="NewRss">
+        <button id="createRss">
+            Add
+        </button>
+    </div>
+    <div>
+        <label>Update frequency</label>
+        <input name="FreqUpd" id="FreqUpd" type="number" value=@Model.FreqUpd>
+        <button id="upd">
+            Update
+        </button>
+    </div>
+</div>
 
-<div>
-    <label>
-        Rss channel
-    </label>
-    <input name="BaseRss" value=@Model.BaseRss>
-    <button>
-        Add
-    </button>
-</div>
-<div>
-    <label>Update frequency</label>
-    <input name="FreqUpd" type="number" value=@Model.FreqUpd>
-    <button id="upd">
-        Update
-    </button>
-</div>
 <div>
     <h3>
         Users Rss channels
     </h3>
     <div id="rssChannels">
-        @{Html.RenderPartial("deleterss.cshtml", @Model);}
+        @{Html.RenderPartial("rss.cshtml", @Model);}
     </div>
 
 </div>

@@ -25,15 +25,30 @@ namespace rss_feeder.Controllers
             _logger = logger;
         }
 
-        public IActionResult deleterss(string rssChannel)
+        [HttpDelete]
+        public IActionResult rss(string rssChannel)
         {
             string jsonString = System.IO.File.ReadAllText(JsonPath);
             FeedSettings settings = JsonSerializer.Deserialize<FeedSettings>(jsonString);
             settings.RssChannels.Remove(rssChannel);
             jsonString = JsonSerializer.Serialize<FeedSettings>(settings);
             System.IO.File.WriteAllText(JsonPath, jsonString);
-            return PartialView(settings);
+            return PartialView("rss", settings);
         }
+
+        [HttpPost]
+       // [Route("Feed/rss")]
+        public IActionResult rssCreate(string rssChannel)
+        {
+            string jsonString = System.IO.File.ReadAllText(JsonPath);
+            FeedSettings settings = JsonSerializer.Deserialize<FeedSettings>(jsonString);
+            settings.RssChannels.Add(rssChannel);
+            jsonString = JsonSerializer.Serialize<FeedSettings>(settings);
+            System.IO.File.WriteAllText(JsonPath, jsonString);
+            return PartialView("rss", settings);
+        }
+
+
         public IActionResult Habr()
         {
 
@@ -54,17 +69,18 @@ namespace rss_feeder.Controllers
             return View(settings);
         }
 
+     
         [HttpPost]
-        public IActionResult Settings(string BaseRss, int FreqUpd)
-        {
-            FeedSettings settings = new FeedSettings(BaseRss, FreqUpd);
 
+        public IActionResult UpdFreq(int freq)
+        {
+            FeedSettings settings = JsonSerializer.Deserialize<FeedSettings>(System.IO.File.ReadAllText(JsonPath));
+            settings.FreqUpd = freq;
             string jsonString = JsonSerializer.Serialize<FeedSettings>(settings);
             System.IO.File.WriteAllText(JsonPath, jsonString);
-            return Settings();
+            return StatusCode(200);
         }
 
-      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

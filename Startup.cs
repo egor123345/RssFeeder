@@ -52,7 +52,7 @@ namespace rss_feeder
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Feed}/{action=Habr}/{id?}");
+                    pattern: "{controller=Feed}/{action=Settings}/{id?}");
             });
         }
     }
